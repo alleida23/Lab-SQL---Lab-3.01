@@ -24,6 +24,7 @@ SELECT * FROM staff;
 
 
 -- 3. Add rental for movie "Academy Dinosaur" by Charlotte Hunter from Mike Hillyer at Store 1.
+
 -- You can use current date for the rental_date column in the rental table. (CURDATE/NOW)
 -- Hint: Check the columns in the table rental and see what information you would need to add there.
 -- You can query those pieces of information.
@@ -32,37 +33,44 @@ SELECT * FROM staff;
 
 -- Use similar method to get inventory_id, film_id, and staff_id.
 
-SELECT * FROM rental LIMIT 6; #rental_id PRIMARY, rental_date, inventory_id FOREIGN, customer_id, return_date, staff_id, last_update
+SELECT * from customer LIMIT 5;
 
-SELECT * from customer;
+
+# Rental date --> current_date / curdate
+
+#Getting film_id
+SELECT film_id
+FROM film
+WHERE title = 'Academy Dinosaur';  # Film_id = 1
+
+# Getting inventory_id 
+SELECT inventory_id
+FROM inventory 
+WHERE film_id = 9; #inventory_id = multiple results (1-8) --> shouldn't be a serial foreign key (and unique)?
+
+# Getting customer_id
+SELECT customer_id
+FROM customer
+WHERE first_name = 'CHARLOTTE' AND last_name = 'HUNTER'; # customer_id = 130
+
+# Getting staff_id 
+SELECT staff_id
+FROM staff
+WHERE first_name = 'Mike'
+and last_name = 'Hillyer'; # staff_id = 1
+
 
 -- Insert a new rental for "Academy Dinosaur" by Charlotte Hunter from Mike Hillyer at Store 1
 INSERT INTO rental (rental_date, inventory_id, customer_id, staff_id)
-VALUES (CURRENT_DATE, 1, 130, 1);
+VALUES (CURRENT_DATE, 9, 130, 1);
 
-#check 
+# Checking new insert 
 SELECT * FROM rental WHERE customer_id = 130;
 
-#get customer ID 
-select customer_id from sakila.customer
-where first_name = 'CHARLOTTE' and last_name = 'HUNTER';
-
-#get filmID
-select film_id from sakila.film
-where title = 'Academy Dinosaur'; #Film_id = 1
-
-#get inventoryID 
-SELECT inventory_id from sakila.inventory 
-where film_id = 1; 
-
-#gzt staff_id 
-
-SELECT staff_id from sakila.staff where first_name = 'mike'
-and last_name = 'Hillyer';
 
 
 
-#also possible to fill new rows with information from other tables
+#also possible to fill new rows with information from other tables (?)
 
 -- INSERT INTO table2 (col1, col2...)
 -- SELECT col1, col2...
@@ -75,12 +83,11 @@ and last_name = 'Hillyer';
 
 -- 1. Use dbdiagram.io or draw.io to propose a new structure for the Sakila database. (At least 3 changes to improve the database, the structure)
 
-# Delete film_text_table --> title and description already exist in film table.
+ Delete film_text_table --> title and description already exist in film table.
 
-# Include category 'name' into film_category and delete category table.
+ Include category 'name' into film_category and delete category table.
 
-# Merge actor and film_actor tables
+ Merge actor and film_actor tables
 
-select * from language;
 
 -- 2. Define primary keys and foreign keys for the new database. (hand, ok)
